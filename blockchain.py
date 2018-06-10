@@ -17,12 +17,12 @@ class Blockchain:
                   "previous_hash": previous_hash}
         self.chain.append(block)
         return block
-
+x
     def get_previous_block(self):
         return self.chain[-1]
 
 
-    def proof_of_work(self,previous_proof):
+    def proof_of_work(self, previous_proof):
         new_proof = 1
         check_proof = False
         while check_proof is False:
@@ -32,3 +32,7 @@ class Blockchain:
             else:
                 new_proof += 1
         return new_proof
+
+    def hash(self, block):
+        encoded_block = json.dumps(block, sort_keys = True).encode()
+        return hashlib.sha256(encoded_block).hexidigest()
