@@ -89,5 +89,15 @@ def get_chain():
                 'length': len(blockchain.chain)}
     return jsonify(response), 200
 
+# check if chain is valid
+@app.route('/isvalid', methods=['GET'])
+def is_valid():
+    is_valid = blockchain.is_chain_valid(blockchain.chain)
+    if is_valid:
+        response = {'message': 'YES: chain is valid'}
+    else:
+        response = {'message': 'NO: chain is NOT valid'}
+    return jsonify(response), 200
+
 # Run flask app
 app.run(host = '0.0.0.0', port = 5000)
