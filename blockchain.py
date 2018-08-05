@@ -1,7 +1,7 @@
 import datetime
 import hashlib
 import json
-from Flask import flask, jsonify
+from flask import Flask, jsonify
 
 ######################################
 # Create blockchain ##################
@@ -65,5 +65,19 @@ app = Flask(__name__)
 # Create blockchain instance #########
 blockchain = Blockchain()
 
+# Mine block
 
-
+@app.route('/mineblock', methods=['GET'])
+def mine_block():
+    previous_block = blockchain.get_previous_block()
+    previous_proof = previous_block['proof']
+    proof = blockchain.proof_of_work(previous_proof)
+    previous_hash = blockchain.hash(previous_block)
+    block = blockchain.create_block(proof, previous_hash)
+    response = {'message': 'You mined a block!',
+                'index': block['index'],
+                'timestamp': block['timestamp'],
+                'proof': block['proof'],
+                'previous_hash': block['previous_hash']
+                }
+    return jsonify(response), 200
